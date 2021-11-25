@@ -1,9 +1,11 @@
 #include <iostream>
 #include <bits/stdc++.h>
+#include <cmath>
 
 const int FILAS_MATRIZ_POSIB = 5;
 const int COLUMNAS_MATRIZ_POSIB = 3;
 
+int total_nodos = 0;
 //matrices con todas las opciones posibles
 
 //cuando el barco es 0 --> esta en b
@@ -85,8 +87,8 @@ int *opciones_nodos_hijos(Node *padre) //verifica que opciones de todas las posi
     {
         for (int i = 0; i < FILAS_MATRIZ_POSIB ; i++) //recorro las columnas
         {
-            int misioneros_actual = padre->misioneros - posibilidades_ab[i][0];
-            int canibales_actual = padre->canibales - posibilidades_ab[i][1];
+            int misioneros_actual = padre->misioneros + posibilidades_ab[i][0];
+            int canibales_actual = padre->canibales + posibilidades_ab[i][1];
 
             if(misioneros_actual >= 0 && misioneros_actual <= 3 && canibales_actual >= 0 && canibales_actual <= 3)
             {
@@ -128,6 +130,65 @@ int *opciones_nodos_hijos(Node *padre) //verifica que opciones de todas las posi
     return hijos;
 }
 
+
+//padre viene ya con un primer nivel
+Node *crea_arbol( Node *padre, int cant_nodos_ult_nivel )
+{
+
+    bool hay_nuevo_nivel = true;
+    int num_nodos_ult_nivel = cant_nodos_ult_nivel;
+    //std::cout<<"num_nodos_ult_nivel------"<< num_nodos_ult_nivel<<"\n";
+    while( hay_nuevo_nivel )
+    {
+        std::cout<<"hay nuevo nivel\n";
+        int bandera_nuevo_nivel = 0;
+
+        std::cout<< "valor que empieza i "<<abs(total_nodos-num_nodos_ult_nivel) + 1<<"\n";
+
+        for ( int i = abs(total_nodos-num_nodos_ult_nivel) + 1  ; i < total_nodos ; i++ )
+        {
+            std::cout<<"recorriendo ultimo nivel de nodos" << i <<"\n";
+
+            int *opciones_hijos = opciones_nodos_hijos(padre->child[i]); //caminos posibles a los que se puede ir que cumplen con la funcion condicion
+
+            for (int j = 0 ; j < 5 ; j++)
+            {
+                if(opciones_hijos[j] != -1)
+                {
+                    bandera_nuevo_nivel ++;
+
+                    int actual_misioneros = padre->child[i]->misioneros+posibilidades_ab[j][0];
+                    int actual_canibales = padre->child[i]->canibales+posibilidades_ab[j][1];
+                    int actual_barco = padre->child[i]->barco + posibilidades_ab[j][2];
+
+                    (padre->child[j]->child).push_back(newNode(actual_misioneros,actual_canibales,actual_barco));
+
+
+                }
+            }
+        }
+
+        if(bandera_nuevo_nivel > 0)
+        {
+            hay_nuevo_nivel = true;
+
+        } else {
+
+            hay_nuevo_nivel = false;
+        }
+
+        std::cout<<"v a l e r i a";
+        total_nodos += total_nodos + bandera_nuevo_nivel;
+        num_nodos_ult_nivel = bandera_nuevo_nivel;
+        std::cout<<"---------------->total_nodos-num_nodos_ult_nivel"<<total_nodos-num_nodos_ult_nivel<<"\n";
+
+
+    }
+
+    return padre;
+
+}
+
 int main()
 {
     //Creo el nodo padre con el estado inicial M3C3B1
@@ -135,23 +196,31 @@ int main()
 
     int *opciones_hijos = opciones_nodos_hijos(root);
 
-    if(root->barco == 1)//barco en a
+    int numero_hijos = 0;
+    //-------------------creo el primero nivel
+    for (int i = 0 ; i < 5 ; i++)
     {
-
-        for (int i = 0 ; i < 5 ; i++)
+        if(opciones_hijos[i] != -1)
         {
-            if(opciones_hijos[i] != -1)
-            {
-                int actual_misioneros = root->misioneros+posibilidades_ab[i][0];
-                int actual_canibales = root->canibales+posibilidades_ab[i][1];
-                int actual_barco = root->barco + posibilidades_ab[i][2];
+            numero_hijos++;
 
-                (root->child).push_back(newNode(actual_misioneros,actual_canibales,actual_barco));
-            }
+            int actual_misioneros = root->misioneros+posibilidades_ab[i][0];
+            int actual_canibales = root->canibales+posibilidades_ab[i][1];
+            int actual_barco = root->barco + posibilidades_ab[i][2];
+
+            (root->child).push_back(newNode(actual_misioneros,actual_canibales,actual_barco));
+
+
         }
     }
+
+    std::cout<<"numero de hijos nivel 1 "<< numero_hijos <<"\n";
+
+    Node *arbol_completo = crea_arbol(root, numero_hijos);
+    //-------------------
+
     std::cout<< "hello brigitte, la respuesta: \n";
-    levelOrderTraversal(root);
+    levelOrderTraversal(arbol_completo);
 
 
     return 0;
