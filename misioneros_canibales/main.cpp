@@ -42,7 +42,7 @@ Node *newNode(int misioneros, int canibales, int barco)
 int *opciones_nodos_hijos(Node *padre) //verifica que opciones de todas las posibles, cumplen con la condición
 {
 
-    int hijos[5] = {0,0,0,0,0};
+    int hijos[5] = {-1,-1,-1,-1,-1};
     int contador_hijos = 0;
 
     if (padre->barco == 0) //el barco esta en b
@@ -56,7 +56,7 @@ int *opciones_nodos_hijos(Node *padre) //verifica que opciones de todas las posi
             {
                 if( misioneros_actual >= canibales_actual && ((3 - misioneros_actual) >= (3 - canibales_actual ) || (3 -  misioneros_actual) == 0 ))// condición del lado a && condición del lado b
                 {
-                   std::cout<<"posible hijo "<<i;
+                   //std::cout<<"posible hijo "<<i;
                    hijos[contador_hijos] = i;
                    contador_hijos ++;
                 }
@@ -76,16 +76,22 @@ int *opciones_nodos_hijos(Node *padre) //verifica que opciones de todas las posi
 
             if(misioneros_actual >= 0 && misioneros_actual <= 3 && canibales_actual >= 0 && canibales_actual <= 3)
             {
-                std::cout<<"m"<<misioneros_actual <<"c"<< canibales_actual <<"\n";
+                //std::cout<<"m"<<misioneros_actual <<"c"<< canibales_actual <<"\n";
 
                 if( misioneros_actual >= canibales_actual && ((3 - misioneros_actual) >= (3 - canibales_actual ) || (3 -  misioneros_actual) == 0 ))// condición del lado a && condición del lado b
                 {
-                   std::cout<<"posible hijo--> "<<j<<std::endl;
+                   //std::cout<<"posible hijo--> "<<j<<std::endl;
                    hijos[contador_hijos] = j;
                    contador_hijos ++;
                 }
             }
         }
+    }
+
+    std::cout<<"matriz posibilidades"<<std::endl;
+    for(int x=0;x<FILAS_MATRIZ_POSIB;x++)
+    {
+        std::cout<<hijos[x]<<std::endl;
     }
     return hijos;
 }
@@ -100,10 +106,9 @@ int main()
 
 
 
-    for(int y=0;y<sizeof(opciones_hijos);y++)  // loop for the three elements on the line
+    for(int y=0;y<5;y++)  // loop for the three elements on the line
     {
-
-        std::cout<<opciones_hijos[y]<<std::endl;  // display the current element out of the array
+        std::cout<<"hello vale, las respuestas: "<<opciones_hijos[y]<<std::endl;
     }
 
     return 0;
