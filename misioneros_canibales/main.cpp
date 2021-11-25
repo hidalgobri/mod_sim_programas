@@ -42,7 +42,7 @@ Node *newNode(int misioneros, int canibales, int barco)
 int *opciones_nodos_hijos(Node *padre) //verifica que opciones de todas las posibles, cumplen con la condición
 {
 
-    int hijos[5] = {-1,-1,-1,-1,-1};
+    static int hijos[5] = {-1,-1,-1,-1,-1};
     int contador_hijos = 0;
 
     if (padre->barco == 0) //el barco esta en b
@@ -88,11 +88,7 @@ int *opciones_nodos_hijos(Node *padre) //verifica que opciones de todas las posi
         }
     }
 
-    std::cout<<"matriz posibilidades"<<std::endl;
-    for(int x=0;x<FILAS_MATRIZ_POSIB;x++)
-    {
-        std::cout<<hijos[x]<<std::endl;
-    }
+
     return hijos;
 }
 
@@ -104,7 +100,7 @@ int main()
 
     int *opciones_hijos = opciones_nodos_hijos(root);
 
-
+    std::cout<<"hello vale, las respuestas: "<<opciones_hijos[0]<<std::endl;
 
     for(int y=0;y<5;y++)  // loop for the three elements on the line
     {
