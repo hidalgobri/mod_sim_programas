@@ -1,9 +1,13 @@
 #include <iostream>
 #include <bits/stdc++.h>
-//hola
+
+const int FILAS_MATRIZ_POSIB = 5;
+const int COLUMNAS_MATRIZ_POSIB = 3;
+
 //matrices con todas las opciones posibles
 //cuando el barco es 0 --> esta en b
 //como queda a, cuando el barco se
+
 int posibilidades_ab[5][3] = {{0,-1,-1} //misionero, canibal, barco
                         , {0,-2,-1}
                         , {-1,0,-1}
@@ -37,42 +41,34 @@ Node *newNode(int misioneros, int canibales, int barco)
 
 int *opciones_nodos_hijos(Node *padre) //verifica que opciones de todas las posibles, cumplen con la condición
 {
-    std::cout<<"entró funcion nodos";
+
     int hijos[5] = {0,0,0,0,0};
     int contador_hijos = 0;
 
     if (padre->barco == 0) //el barco esta en b
     {
-
-        std::cout<<"entró barco 0";
-        for (int i = 0; i < sizeof(posibilidades_ab) ; i++) //recorro las columnas
+        for (int i = 0; i < FILAS_MATRIZ_POSIB ; i++) //recorro las columnas
         {
-            std::cout<<"posible hijo-->"<<i<<std::endl;
-            /*
             int misioneros_actual = padre->misioneros - posibilidades_ab[i][0];
             int canibales_actual = padre->canibales - posibilidades_ab[i][1];
 
             if(misioneros_actual >= 0 && misioneros_actual <= 3 && canibales_actual >= 0 && canibales_actual <= 3)
             {
-                if( misioneros_actual >= canibales_actual && (3 - ( misioneros_actual) >= (3 - (canibales_actual) ) ))// condición del lado a && condición del lado b
+                if( misioneros_actual >= canibales_actual && ((3 - misioneros_actual) >= (3 - canibales_actual ) || (3 -  misioneros_actual) == 0 ))// condición del lado a && condición del lado b
                 {
-                cout<<"posible hijo "<<i;
+                   std::cout<<"posible hijo "<<i;
                    hijos[contador_hijos] = i;
                    contador_hijos ++;
                 }
             }
-
-            */
         }
-
     }
         else if(padre->barco == 1) // el barco esta en a
     {
-        std::cout<<"entró barco 1";
-        for (int j = 0; j < sizeof(posibilidades_ab) ; j++) //recorro las columnas
+        std::cout<<"entró barco 1 \n";
+
+        for (int j = 0; j < FILAS_MATRIZ_POSIB ; j++) //recorro las columnas
         {
-            std::cout<<"posible hijo-->"<<j<<std::endl;
-             /*
             int misioneros_actual = padre->misioneros + posibilidades_ab[j][0];
             int canibales_actual = padre->canibales + posibilidades_ab[j][1];
 
@@ -80,14 +76,15 @@ int *opciones_nodos_hijos(Node *padre) //verifica que opciones de todas las posi
 
             if(misioneros_actual >= 0 && misioneros_actual <= 3 && canibales_actual >= 0 && canibales_actual <= 3)
             {
-                if( misioneros_actual >= canibales_actual && (3 - ( misioneros_actual) >= (3 - (canibales_actual) ) )) // condición del lado a && condición del lado b
+                std::cout<<"m"<<misioneros_actual <<"c"<< canibales_actual <<"\n";
+
+                if( misioneros_actual >= canibales_actual && ((3 - misioneros_actual) >= (3 - canibales_actual ) || (3 -  misioneros_actual) == 0 ))// condición del lado a && condición del lado b
                 {
-                    count<<"posible hijo-->"<<i;
-                   hijos[contador_hijos] = i;
+                   std::cout<<"posible hijo--> "<<j<<std::endl;
+                   hijos[contador_hijos] = j;
                    contador_hijos ++;
                 }
             }
-*/
         }
     }
     return hijos;
